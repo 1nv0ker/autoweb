@@ -58,8 +58,10 @@ def main():
     deviceinfo = getRandom()
     proxies = getProxy()
     co = ChromiumOptions()
+    
     co.set_argument('--disable-blink-features=AutomationControlled')
     co.set_argument('--user-agent="'+ deviceinfo['userAgent'] +'"')
+    co.add_extension('C:/other/autoweb/extension')
     # proxy = random.choice(proxies)
     # print(proxy)
     # co.set_proxy(proxy)
