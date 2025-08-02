@@ -58,30 +58,33 @@ def main():
     deviceinfo = getRandom()
     proxies = getProxy()
     co = ChromiumOptions()
+    print(deviceinfo)
+    co.set_user_agent(deviceinfo['userAgent'])
     
-    co.set_argument('--disable-blink-features=AutomationControlled')
-    co.set_argument('--user-agent="'+ deviceinfo['userAgent'] +'"')
-    co.add_extension('C:/other/autoweb/extension')
+    # co.set_argument('--disable-blink-features=AutomationControlled')
+    co.set_argument('--window-size', str(deviceinfo["width"])+','+str(deviceinfo["height"]))
+    co.add_extension('./extension')
     # proxy = random.choice(proxies)
     # print(proxy)
     # co.set_proxy(proxy)
     
     page = ChromiumPage(co)
+    print(page.run_js('return [screen.width, screen.height]'))  # 输出：[1366, 768]
     # page.set.window_size(deviceinfo["width"], deviceinfo["height"])
     # page.set(deviceinfo.width, deviceinfo.height)
-    page.run_js('Object.defineProperty(navigator, "language", {value: "en-US"});')
-    page.run_js("""
-        // 修改 Canvas 绘制行为，添加随机噪声
-        const oldToDataURL = HTMLCanvasElement.prototype.toDataURL;
-        HTMLCanvasElement.prototype.toDataURL = function() {
-            const ctx = this.getContext('2d');
-            ctx.fillStyle = 'rgba(128,128,128,0.5)';
-            ctx.fillRect(0, 0, this.width, this.height); // 添加基础图形
-            ctx.fillStyle = 'rgba(' + Math.random()*255 + ',' + Math.random()*255 + ',' + Math.random()*255 + ', 0.3)';
-            ctx.fillText(Date.now().toString(), 10, 20); // 添加动态文本干扰
-            return oldToDataURL.apply(this, arguments);
-        };
-    """)
+    # page.run_js('Object.defineProperty(navigator, "language", {value: "en-US"});')
+    # page.run_js("""
+    #     // 修改 Canvas 绘制行为，添加随机噪声
+    #     const oldToDataURL = HTMLCanvasElement.prototype.toDataURL;
+    #     HTMLCanvasElement.prototype.toDataURL = function() {
+    #         const ctx = this.getContext('2d');
+    #         ctx.fillStyle = 'rgba(128,128,128,0.5)';
+    #         ctx.fillRect(0, 0, this.width, this.height); // 添加基础图形
+    #         ctx.fillStyle = 'rgba(' + Math.random()*255 + ',' + Math.random()*255 + ',' + Math.random()*255 + ', 0.3)';
+    #         ctx.fillText(Date.now().toString(), 10, 20); // 添加动态文本干扰
+    #         return oldToDataURL.apply(this, arguments);
+    #     };
+    # """)
 
     page.get('https://www.iploong.com')
 
