@@ -13,34 +13,6 @@ headers = {'Content-Type': 'application/json'}
 
 # browser.get('chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain=www.iploong.com')
 
-def getRandom():
-    userAgent = UserAgent().random
-    user_agent = parse(userAgent)#随机useragent
-
-    if user_agent.is_mobile:
-        width = random.randint(320, 430)
-        height = random.randint(568, 930)
-        return {
-            "userAgent":userAgent,
-            "width":width,
-            "height":height
-        }
-    elif user_agent.is_tablet:
-        screens = [[834,1194],[820,1180],[810,1080],[1200, 1920], [1024,768]]
-        screen = random.choice(screens)
-        return {
-            "userAgent":userAgent,
-            "width":screen[0],
-            "height":screen[1]
-        }
-    else:
-        screens = [[1920,1080], [1024, 720],[2560,1440],[3840,2160]]
-        screen = random.choice(screens)
-        return {
-            "userAgent":userAgent,
-            "width":screen[0],
-            "height":screen[1]
-        }
 def getProxy():
     proxystring = '''proxy.bitip.com:10001:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
 proxy.bitip.com:10003:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
@@ -69,7 +41,6 @@ def create_bit_browser():
     return res['data']['driver']
 
 def main():
-    deviceinfo = getRandom()
     # proxies = getProxy()
     co = ChromiumOptions()
     # print(deviceinfo)
