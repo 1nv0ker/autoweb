@@ -4,6 +4,7 @@ from user_agents import parse
 import random
 import requests
 import json
+from deviceFinger import set_custom
 
 headers = {'Content-Type': 'application/json'}
 # browser = Chromium() 
@@ -69,43 +70,24 @@ def create_bit_browser():
 
 def main():
     deviceinfo = getRandom()
-    proxies = getProxy()
+    # proxies = getProxy()
     co = ChromiumOptions()
-    print(deviceinfo)
+    # print(deviceinfo)
     # driverPath  = create_bit_browser()
     co.set_argument('--disable-blink-features=AutomationControlled')
-    # co.set_argument('--no-sandbox')
-    # co.set_argument('--headless')
-    co.set_user_agent(deviceinfo['userAgent'])
-    # co.set_browser_path(driverPath)
-    # co.set_argument('--disable-blink-features=AutomationControlled')
-    # co.set_argument('--window-size', str(deviceinfo["width"])+','+str(deviceinfo["height"]))
-    # co.add_extension('./extension')
+    
+    co.add_extension('./extension')
     # proxy = random.choice(proxies)
     # print(proxy)
     # co.set_proxy(proxy)
     
     page = ChromiumPage(co)
-    print(page.run_js('return [screen.width, screen.height]'))  # 输出：[1366, 768]
-    # page.set.window_size(deviceinfo["width"], deviceinfo["height"])
-    # page.set(deviceinfo.width, deviceinfo.height)
-    # page.run_js('Object.defineProperty(navigator, "language", {value: "en-US"});')
-    # page.run_js("""
-    #     // 修改 Canvas 绘制行为，添加随机噪声
-    #     const oldToDataURL = HTMLCanvasElement.prototype.toDataURL;
-    #     HTMLCanvasElement.prototype.toDataURL = function() {
-    #         const ctx = this.getContext('2d');
-    #         ctx.fillStyle = 'rgba(128,128,128,0.5)';
-    #         ctx.fillRect(0, 0, this.width, this.height); // 添加基础图形
-    #         ctx.fillStyle = 'rgba(' + Math.random()*255 + ',' + Math.random()*255 + ',' + Math.random()*255 + ', 0.3)';
-    #         ctx.fillText(Date.now().toString(), 10, 20); // 添加动态文本干扰
-    #         return oldToDataURL.apply(this, arguments);
-    #     };
-    # """)
-    # print(WebPage)
-    
-    # page = WebPage(chromium_options=co)
+    # page.set.window.screen(1024)
+    set_custom(page)
+    # page.run_js('localStorage.clear()')
+    # set_custom_useragent(page)
+
     page.get('https://www.iploong.com')
-    # page.
+
 
 main()
