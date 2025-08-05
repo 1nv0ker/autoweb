@@ -18,3 +18,4 @@ def generate_random_string(length: int) -> str:
     random_string = ''.join(random.choice(characters) for _ in range(length))
     
     return random_string
+

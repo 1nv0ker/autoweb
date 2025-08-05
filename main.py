@@ -1,64 +1,63 @@
-from DrissionPage import ChromiumPage, ChromiumOptions, SessionPage,WebPage
-from fake_useragent import UserAgent
-from user_agents import parse
+from DrissionPage import ChromiumOptions,Chromium
+from plugins import generate_random_string
+from webProxy import getProxy
 import random
-import requests
-import json
-from deviceFinger import set_custom
-
-headers = {'Content-Type': 'application/json'}
-# browser = Chromium() 
-# tab = browser.latest_tab
-# tab.get('https://www.iploong.com')
-
-# browser.get('chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain=www.iploong.com')
-
-def getProxy():
-    proxystring = '''proxy.bitip.com:10001:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10003:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10002:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10002:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28
-proxy.bitip.com:10004:1c7t3eykxutgrbitip_g-US_f-129029g9h9g1:127939ghg92g2f28'''
-    proxytemp = proxystring.split('\n')
-    proxies = []
-    for item in proxytemp:
-        data = item.split(':')
-        proxies.append('https://'+data[2]+':'+data[3]+'@'+data[0]+':'+data[1])
-    return proxies
-
-def create_bit_browser():
-    # browser_id = createBrowser()
-    url = "http://127.0.0.1:54345/browser/open"
-    headers = {'X-API-KEY': 'f2a39b9ffc0d4d21a2b4f6a637e1e8ed'}
-    json_data = {'id': 'f657877d57e145d6b6408720adb2dfa6'}
-    res = requests.post(url, json=json_data, headers=headers).json()
-    print(res)
-    return res['data']['driver']
-
+import time
+domain = 'www.iploong.com'
+target_url = 'https://www.iploong.com'
+port = 9222
 def main():
-    # proxies = getProxy()
-    co = ChromiumOptions()
-    # print(deviceinfo)
-    # driverPath  = create_bit_browser()
-    co.set_argument('--disable-blink-features=AutomationControlled')
+    progressProcess()
     
-    co.add_extension('./extension')
-    # proxy = random.choice(proxies)
+def acceptExtension(browser):
+    #打开新标签页
+    tab = browser.new_tab()
+    popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain=www.iploong.com'
+    tab.get(popup_url)
+    tab.wait()
+    dom = tab.eles('I Accept')
+    try:
+        dom[1].click()
+    except:
+        print('找不到插件里的I Accept按钮')
+
+def pageFromBaidu(browser):
+    tab = browser.new_tab()
+    tab.get('https://www.baidu.com')
+    tab.wait(random.uniform(1.0, 5.0))
+    search_input = tab.ele('#kw')
+
+    search_input.input('iploong.com')
+
+    search_button = tab.ele('#su')
+
+    search_button.click()
+    time.sleep(2)
+    try:
+        content = tab.eles('@id=1')
+        link = content[1].ele('tag:a')
+        link.click()
+    except:
+        print('iploong在百度中未找到')
+def progressProcess():
+    filename = generate_random_string(8)
+    filename = 'data3'
+    co = ChromiumOptions().set_local_port(port).set_user_data_path('webData/'+filename)
+    proxy = getProxy()
     # print(proxy)
-    # co.set_proxy(proxy)
+    co.set_proxy('http://'+proxy)
+    # co.add_extension('./proxy')
+    # co.add_extension('./extension')
+    browser = Chromium(co)
+
+    #同意插件获取数据
+    # acceptExtension(browser)
+
+    #从百度进入网站
+    pageFromBaidu(browser)
+    # browser.wait(random.uniform(1.0, 5.0))
     
-    page = ChromiumPage(co)
-    # page.set.window.screen(1024)
-    set_custom(page)
-    # page.run_js('localStorage.clear()')
-    # set_custom_useragent(page)
+    
 
-    page.get('https://www.iploong.com')
-
-
-main()
+if __name__ == '__main__':
+    main()
