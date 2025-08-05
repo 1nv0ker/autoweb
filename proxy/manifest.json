@@ -1,0 +1,17 @@
+
+    {
+        "version": "1.0.0",
+        "manifest_version": 3,
+        "name": "Proxy auth",
+        "permissions": [
+            "proxy",
+            "webRequest",
+            "webRequestAuthProvider"
+        ],
+        "host_permissions": ["<all_urls>"],
+        "background": {
+            "service_worker": "background.js"
+        },
+        "minimum_chrome_version":"88"
+    }
+    

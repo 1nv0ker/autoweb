@@ -1,6 +1,6 @@
 from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
-from webProxy import getProxy
+from webProxy import create_proxy_auth_extension
 import random
 import time
 domain = 'www.iploong.com'
@@ -43,10 +43,12 @@ def progressProcess():
     filename = generate_random_string(8)
     filename = 'data3'
     co = ChromiumOptions().set_local_port(port).set_user_data_path('webData/'+filename)
-    proxy = getProxy()
+    proxy_auth_plugin_path = create_proxy_auth_extension(
+        plugin_path="./proxy",
+    )
     # print(proxy)
-    co.set_proxy('http://'+proxy)
-    # co.add_extension('./proxy')
+    # co.set_proxy('http://'+proxy)
+    co.add_extension(proxy_auth_plugin_path)
     # co.add_extension('./extension')
     browser = Chromium(co)
 
