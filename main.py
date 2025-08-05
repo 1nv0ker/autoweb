@@ -2,7 +2,7 @@ from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
 import random
-from webProcess import randomScroll
+from webProcess import randomScroll,pageFromBaidu, pageFromGoogle
 import shutil 
 domain = 'www.iploong.com'
 target_url = 'https://www.iploong.com'
@@ -21,27 +21,6 @@ def acceptExtension(browser):
     except:
         print('找不到插件里的I Accept按钮')
 
-def pageFromBaidu(browser):
-    tab = browser.new_tab()
-    tab.get('https://www.baidu.com')
-    tab.wait(random.uniform(10.0,20.0))
-    search_input = tab.ele('#kw')
-
-    search_input.input('iploong.com')
-
-    search_button = tab.ele('#su')
-
-    search_button.click()
-    tab.wait(random.uniform(10.0,20.0))
-    try:
-        content = tab.eles('@id=1')
-        link = content[1].ele('tag:a')
-        link.click()
-        tab.wait(random.uniform(10.0,20.0))
-    except:
-        print('iploong在百度中未找到')
-    
-    return tab
 def progressProcess():
     filename = generate_random_string(8)
     # filename = 'data3'
@@ -52,18 +31,21 @@ def progressProcess():
     # print(proxy)
     # co.set_proxy('http://'+proxy)
     # co.add_extension(proxy_auth_plugin_path)
-    co.add_extension('./extension')
+    # co.add_extension('./extension')
     browser = Chromium(co)
     #同意插件获取数据
-    acceptExtension(browser)
+    # acceptExtension(browser)
 
     #从百度进入网站
-    tab = pageFromBaidu(browser)
-    randomScroll(tab)
-    browser.quit()
-    
-    #删除浏览器配置数据
-    shutil.rmtree('webData/'+filename)
+    # tab = pageFromBaidu(browser)
+    #从google进入网站
+    tab = pageFromGoogle(browser)
+
+    # randomScroll(tab)
+    # browser.quit()
+
+    # #删除浏览器配置数据
+    # shutil.rmtree('webData/'+filename)
     # browser.wait(random.uniform(1.0, 5.0))
     
     

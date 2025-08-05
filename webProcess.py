@@ -1,32 +1,44 @@
 import random
 import time
+
+def pageFromBaidu(browser):
+    tab = browser.new_tab()
+    tab.get('https://www.baidu.com')
+    tab.wait(random.uniform(10.0,20.0))
+    search_input = tab.ele('#kw')
+
+    search_input.input('iploong.com')
+
+    search_button = tab.ele('#su')
+
+    search_button.click()
+    tab.wait(random.uniform(10.0,20.0))
+    try:
+        content = tab.eles('@id=1')
+        link = content[1].ele('tag:a')
+        link.click()
+        tab.wait(random.uniform(10.0,20.0))
+    except:
+        print('iploong在百度中未找到')
+    
+    return tab
+
+def pageFromGoogle(browser):
+    tab = browser.new_tab()
+    tab.get('https://www.google.com')
+    time.sleep(2)
+    search_box = tab.ele('@name=q')
+    search_box.input('iploong.com')
+    tab.actions.key_down('ENTER')
+    time.sleep(5)
+    try:
+        links = tab.eles('@class=zReHs')
+        links[0].click()
+    except:
+        print('iploong在谷歌中未找到')
+    return tab
+
 def randomScroll(tab, steps=10):
 
     directions = ['up', 'down', 'left', 'right']
-    for _ in range(steps):
-        try:
-            # 随机选择滚动方向
-            direction = random.choice(directions)
-            
-            # 随机生成滚动距离(50-500像素)
-            distance = random.randint(50, 500)
-            
-            # 随机生成等待时间(0.5-2秒)，模拟人类思考时间
-            wait_time = random.uniform(0.5, 2)
-            time.sleep(wait_time)
-            
-            # 执行滚动操作
-            if direction == 'up':
-                tab.scroll.up(distance)
-            elif direction == 'down':
-                tab.scroll.down(distance)
-            elif direction == 'left':
-                tab.scroll.left(distance)
-            elif direction == 'right':
-                tab.scroll.right(distance)
-                
-            print(f"滚动方向: {direction}, 距离: {distance}px, 等待时间: {wait_time:.2f}s")
-            
-        except Exception as e:
-            print(f"滚动过程中发生错误: {e}")
-            continue
+    

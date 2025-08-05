@@ -5,7 +5,7 @@
                 singleProxy: {
                     scheme: "http",
                     host: "proxy.bitip.com",
-                    port: parseInt(10004)
+                    port: parseInt(10001)
                 },
                 bypassList: ["localhost", "127.0.0.1"]
             }
