@@ -31,20 +31,21 @@ def progressProcess():
     # print(proxy)
     # co.set_proxy('http://'+proxy)
     co.add_extension(proxy_auth_plugin_path)
+    timePause()
     co.add_extension('./extension')
     browser = Chromium(co)
 
     #同意插件获取数据
     acceptExtension(browser)
-
+    timePause()
     #从百度进入网站
     # pageFromBaidu(tab)
     
     #从google进入网站
-    pageFromGoogle(browser)
-
+    # pageFromGoogle(browser)
+    browser.new_tab('https://www.iploong.com')
     tab = browser.latest_tab
-    
+    timePause()
     randomMoveMouse(tab)
     
     timePause()
