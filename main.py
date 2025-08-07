@@ -5,9 +5,11 @@ from webProcess import timePause, pageFromGoogle,randomMoveMouse
 import shutil 
 domain = 'www.iploong.com'
 target_url = 'https://www.iploong.com'
+step = 100
 port = 9222
 def main():
-    progressProcess()
+    for _ in 100:
+        progressProcess()
     
 def acceptExtension(browser):
     #打开新标签页
