@@ -1,7 +1,6 @@
 from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-import random
 from webProcess import timePause, pageFromGoogle,randomMoveMouse
 import shutil 
 domain = 'www.iploong.com'
@@ -13,7 +12,7 @@ def main():
 def acceptExtension(browser):
     #打开新标签页
     tab = browser.new_tab()
-    popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain=www.iploong.com'
+    popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
     tab.get(popup_url)
     dom = tab.eles('I Accept')
     try:
@@ -36,15 +35,17 @@ def progressProcess():
     browser = Chromium(co)
 
     #同意插件获取数据
-    acceptExtension(browser)
+    
     timePause()
     #从百度进入网站
     # pageFromBaidu(tab)
     
     #从google进入网站
     # pageFromGoogle(browser)
-    browser.new_tab('https://www.iploong.com')
-    tab = browser.latest_tab
+    tab = browser.new_tab(target_url)
+    # tab = browser.latest_tab
+    timePause()
+    acceptExtension(browser)
     timePause()
     randomMoveMouse(tab)
     
