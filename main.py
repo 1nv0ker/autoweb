@@ -8,7 +8,7 @@ target_url = 'https://www.iploong.com'
 step = 100
 port = 9222
 def main():
-    for _ in 100:
+    for _ in range(100):
         progressProcess()
     
 def acceptExtension(browser):
