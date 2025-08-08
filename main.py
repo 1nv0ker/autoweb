@@ -1,14 +1,15 @@
-from DrissionPage import ChromiumOptions,Chromium
+from DrissionPage import ChromiumOptions,Chromium,ChromiumPage
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-from webProcess import timePause, pageFromGoogle,randomMoveMouse
+from webProcess import timePause, pageFromGoogle,randomMoveMouse,timeLongPause
 import shutil 
 domain = 'www.iploong.com'
 target_url = 'https://www.iploong.com'
-step = 100
+step = 1
 port = 9222
+
 def main():
-    for _ in range(100):
+    for _ in range(step):
         progressProcess()
     
 def acceptExtension(browser):
@@ -31,11 +32,13 @@ def progressProcess():
     )
     # print(proxy)
     # co.set_proxy('http://'+proxy)
-    co.add_extension(proxy_auth_plugin_path)
+    # co.add_extension(proxy_auth_plugin_path)
     timePause()
     co.add_extension('./extension')
     browser = Chromium(co)
-
+    
+    #查看ip
+    # browser.new_tab('https://iplocation.com')
     #同意插件获取数据
     
     timePause()
@@ -44,14 +47,37 @@ def progressProcess():
     
     #从google进入网站
     # pageFromGoogle(browser)
-    tab = browser.new_tab(target_url)
+    tab = browser.new_tab()
+    
+    intercept_js = """
+    window.fetch = async function(url, options = {}) {
+        // 记录请求信息
+        const requestInfo = {
+            type: 'fetch',
+            url: url.toString(),
+            method: (options.method || 'GET').toUpperCase(),
+            headers: options.headers ? Object.fromEntries(new Headers(options.headers)) : {},
+            body: options.body ? await options.body.text() : null,
+            timestamp: new Date().getTime()
+        };
+        console.log('requestInfo', requestInfo)
+        // 存入全局数组
+        window.requestLogs.push(requestInfo);
+        
+        // 执行原始 fetch 并返回结果
+        return originalFetch.apply(this, arguments);
+    };
+"""
+    tab.run_js(intercept_js)
+    tab.get(target_url)
+    
     # tab = browser.latest_tab
     timePause()
     acceptExtension(browser)
     timePause()
     randomMoveMouse(tab)
     
-    timePause()
+    timeLongPause()
     # randomScroll(tab)
     browser.quit()
 
