@@ -10,7 +10,7 @@ step = 1
 port = 9222
 
 def main():
-    with open('log.txt', 'a', encoding='utf-8') as f_append:
+    with open('sg.txt', 'a', encoding='utf-8') as f_append:
         for _ in range(step):
             sg_str = progressProcess()
             f_append.write('\n'+sg_str+'\n')
@@ -20,7 +20,7 @@ def acceptExtension(browser):
     #打开新标签页
     tab = browser.new_tab()
     popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
-    tab.listen.start('api-js.mixpanel.com') 
+    tab.listen.start('matomo.similarweb.io') 
     #matomo.similarweb.io
     tab.get(popup_url)
     
