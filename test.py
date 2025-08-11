@@ -46,7 +46,7 @@ def acceptExtension(browser):
 
 def progressProcess():
     filename = generate_random_string(8)
-    filename = 'data2'
+    # filename = 'data2'
     co = ChromiumOptions().set_local_port(port).set_user_data_path('webData/'+filename)
     proxy_auth_plugin_path = create_proxy_auth_extension(
         plugin_path="./proxy",
