@@ -1,16 +1,18 @@
-from DrissionPage import ChromiumOptions,Chromium,ChromiumPage
+from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
 from webProcess import timePause, pageFromGoogle,randomMoveMouse,timeLongPause
+from webRequest import inject_request_interceptor, get_captured_requests
 import shutil 
 domain = 'www.iploong.com'
 target_url = 'https://www.iploong.com'
-step = 1
+step = 200
 port = 9222
 
 def main():
     for _ in range(step):
         progressProcess()
+        print(_)
     
 def acceptExtension(browser):
     #打开新标签页
@@ -31,15 +33,16 @@ def progressProcess():
         plugin_path="./proxy",
     )
     # print(proxy)
-    # co.set_proxy('http://'+proxy)
-    # co.add_extension(proxy_auth_plugin_path)
+    # co.set_proxy('http://13.217.18.147:13761')
+    co.add_extension(proxy_auth_plugin_path)
+    
     timePause()
     co.add_extension('./extension')
     browser = Chromium(co)
-    
+    browser.new_tab().get("https://httpbin.org/ip")
     #查看ip
     # browser.new_tab('https://iplocation.com')
-    #同意插件获取数据
+    
     
     timePause()
     #从百度进入网站
@@ -48,31 +51,27 @@ def progressProcess():
     #从google进入网站
     # pageFromGoogle(browser)
     tab = browser.new_tab()
-    
-    intercept_js = """
-    window.fetch = async function(url, options = {}) {
-        // 记录请求信息
-        const requestInfo = {
-            type: 'fetch',
-            url: url.toString(),
-            method: (options.method || 'GET').toUpperCase(),
-            headers: options.headers ? Object.fromEntries(new Headers(options.headers)) : {},
-            body: options.body ? await options.body.text() : null,
-            timestamp: new Date().getTime()
-        };
-        console.log('requestInfo', requestInfo)
-        // 存入全局数组
-        window.requestLogs.push(requestInfo);
-        
-        // 执行原始 fetch 并返回结果
-        return originalFetch.apply(this, arguments);
-    };
-"""
-    tab.run_js(intercept_js)
     tab.get(target_url)
     
+    # count = 1
+    # while count<5:
+    #     try:
+    #         tab.get(target_url)
+    #         tab._wait_loaded(timeout=20)
+    #     except:
+    #         count = count + 1
+    #         if count < 5:
+    #             tab.refresh()
+    #         else:
+    #             break
+    timeLongPause()
+    # timePause()
+
     # tab = browser.latest_tab
-    timePause()
+    
+    
+    # timePause()
+    #同意插件获取数据
     acceptExtension(browser)
     timePause()
     randomMoveMouse(tab)

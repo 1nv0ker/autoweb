@@ -4,7 +4,7 @@ import time
 def timePause():
     time.sleep(random.uniform(2.0, 10.0))
 def timeLongPause():
-    time.sleep(random.uniform(10.0, 60.0))
+    time.sleep(random.uniform(60.0, 180.0))
 def pageFromBaidu(tab):
     tab.get('https://www.baidu.com')
     # tab.wait(random.uniform(10.0,20.0))
