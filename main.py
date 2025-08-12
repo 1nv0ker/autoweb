@@ -76,7 +76,7 @@ def progressProcess():
     
     timePause()
     tab = browser.new_tab()
-    tab.get(target_url)
+    tab.get(target_url, timeout=timeLongPause())
     
     timePause()
     #同意插件获取数据
