@@ -49,7 +49,7 @@ def randomMoveMouse(tab):
             tab.refresh()
             timeLongPause()
             menus = tab.eles('tag:a')
-            print('menus', menus)
+            # print('menus', menus)
         else:
             break
     

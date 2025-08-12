@@ -55,7 +55,7 @@ def progressProcess():
     )
     # print(proxy)
     # co.set_proxy('http://'+proxy)
-    co.add_extension(proxy_auth_plugin_path)
+    # co.add_extension(proxy_auth_plugin_path)
     timePause()
     # co.add_extension('./extension')
     browser = Chromium(co)
