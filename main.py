@@ -81,7 +81,7 @@ def progressProcess():
     timePause()
     #同意插件获取数据
     dimension11_value = acceptExtension(browser)
-    timePause()
+    # timePause()
     randomMoveMouse(tab)
     
     timeLongPause()

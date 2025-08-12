@@ -10,11 +10,8 @@ step = 1
 port = 9222
 
 def main():
-    with open('sg.txt', 'a', encoding='utf-8') as f_append:
-        for _ in range(step):
-            sg_str = progressProcess()
-            f_append.write('\n'+sg_str+'\n')
-        f_append.close()
+   for _ in range(step):
+        progressProcess()
     
 def acceptExtension(browser):
     #打开新标签页
@@ -24,15 +21,16 @@ def acceptExtension(browser):
     #matomo.similarweb.io
     tab.get(popup_url)
     
-    # dom = tab.eles('I Accept')
+    dom = tab.eles('I Accept')
+    print('dom', dom)
     # dom[1].click()
-    for packet in tab.listen.steps():
-        url = packet.url
-        print('url', url)
-        parsed_params = parse_qs(url)
-        dimension11_value = parsed_params.get('dimension11', [None])[0]
-        print("dimension11的值是:", dimension11_value)
-        return dimension11_value
+    # for packet in tab.listen.steps():
+    #     url = packet.url
+    #     print('url', url)
+    #     parsed_params = parse_qs(url)
+    #     dimension11_value = parsed_params.get('dimension11', [None])[0]
+    #     print("dimension11的值是:", dimension11_value)
+    #     return dimension11_value
     # try:
     #     # res = tab.listen.wait()
     #     123
@@ -47,15 +45,19 @@ def acceptExtension(browser):
 def progressProcess():
     filename = generate_random_string(8)
     # filename = 'data2'
-    co = ChromiumOptions().set_local_port(port).set_user_data_path('webData/'+filename)
+    edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    co = ChromiumOptions()
+    co.set_browser_path(edge_path)
+    co.set_local_port(port)
+    co.set_user_data_path('webData/'+filename)
     proxy_auth_plugin_path = create_proxy_auth_extension(
         plugin_path="./proxy",
     )
     # print(proxy)
     # co.set_proxy('http://'+proxy)
-    # co.add_extension(proxy_auth_plugin_path)
+    co.add_extension(proxy_auth_plugin_path)
     timePause()
-    co.add_extension('./extension')
+    # co.add_extension('./extension')
     browser = Chromium(co)
     
     #查看ip
@@ -69,28 +71,28 @@ def progressProcess():
     #从google进入网站
     # pageFromGoogle(browser)
     tab = browser.new_tab()
-    tab.listen.steps()
+    # tab.listen.steps()
     # tab.clear_cache(session_storage=True, local_storage=True, cache=True)
     tab.get(target_url)
     # tab.li
     
-    timePause()
+    # timePause()
    
     
     # tab = browser.latest_tab
-    sg_str = acceptExtension(browser)
-    print('acceptExtension')
-    timePause()
+    # sg_str = acceptExtension(browser)
+    # print('acceptExtension')
+    # timePause()
     randomMoveMouse(tab)
     timePause()
 
-    timeLongPause()
-    # randomScroll(tab)
-    browser.quit()
+    # timeLongPause()
+    # # randomScroll(tab)
+    # browser.quit()
 
     # #删除浏览器配置数据
-    shutil.rmtree('webData/'+filename)
-    return sg_str
+    # shutil.rmtree('webData/'+filename)
+    # return sg_str
 
 main()
     

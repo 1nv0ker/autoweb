@@ -43,6 +43,16 @@ def pageFromGoogle(browser):
 
 def randomMoveMouse(tab):
     timeLongPause()
+    menus = tab.eles('tag:a')
+    for _ in range(5):
+        if len(menus) == 0:
+            tab.refresh()
+            timeLongPause()
+            menus = tab.eles('tag:a')
+            print('menus', menus)
+        else:
+            break
+    
     offsetX = random.randint(5, 500)
     offsetY = random.randint(5, 500)
     tab.actions.move(offset_x=offsetX, offset_y=offsetY)
@@ -50,11 +60,11 @@ def randomMoveMouse(tab):
     scrollDis = random.randint(5, 800)
     tab.actions.scroll(delta_y=scrollDis)
     timePause()
-    menus = tab.eles('tag:a')
     if len(menus) == 3:
         menus[1].click()
         timePause()
         menus = tab.eles('tag:a')
         menus[2].click()
         timePause()
+    
     
