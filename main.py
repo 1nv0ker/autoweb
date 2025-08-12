@@ -1,39 +1,70 @@
 from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-from webProcess import timePause, pageFromGoogle,randomMoveMouse,timeLongPause
-from webRequest import inject_request_interceptor, get_captured_requests
+from webProcess import timePause,randomMoveMouse,timeLongPause
 import shutil 
+from urllib.parse import parse_qs
 domain = 'www.iploong.com'
 target_url = 'https://www.iploong.com'
-step = 200
-port = 9222
+step = 1
+port = 9221
 
 def main():
-    for _ in range(step):
-        progressProcess()
-        print(_)
+    with open('sg.txt', 'a', encoding='utf-8') as f_append:
+        for _ in range(step):
+            sg_str = progressProcess()
+            if sg_str != False:
+                f_append.write(sg_str+'\n')
+        f_append.close()
     
 def acceptExtension(browser):
     #打开新标签页
     tab = browser.new_tab()
     popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
+    tab.listen.start('matomo.similarweb.io')
     tab.get(popup_url)
     dom = tab.eles('I Accept')
     try:
         dom[1].click()
+        packet = tab.listen.wait(timeout=60)
+        # print('packetstart', packet)
+        #重试5次
+        for _ in range(5):
+            if packet == False:
+                packet = refreshExtension(tab)
+            else:
+                break
+        # print('packetend', packet)
+        if packet == False:
+            return packet
+        url = packet.url
+        # print('url', url)
+        parsed_params = parse_qs(url)
+        dimension11_value = parsed_params.get('dimension11', [None])[0]
+        # print("dimension11的值是:", dimension11_value)
+        return dimension11_value
     except:
         print('找不到插件里的I Accept按钮')
+        return False
+
+def refreshExtension(tab):
+    tab.listen.start('matomo.similarweb.io')
+    tab.refresh()
+    packet = tab.listen.wait(timeout=60)
+    return packet
 
 def progressProcess():
     filename = generate_random_string(8)
     # filename = 'data2'
-    co = ChromiumOptions().set_local_port(port).set_user_data_path('webData/'+filename)
+    #edge浏览器路劲
+    edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    co = ChromiumOptions()
+    co.set_browser_path(edge_path)
+    co.set_local_port(port)
+    co.set_user_data_path('webData/'+filename)
     proxy_auth_plugin_path = create_proxy_auth_extension(
         plugin_path="./proxy",
     )
-    # print(proxy)
-    # co.set_proxy('http://13.217.18.147:13761')
     co.add_extension(proxy_auth_plugin_path)
     
     timePause()
@@ -43,36 +74,13 @@ def progressProcess():
     #查看ip
     # browser.new_tab('https://iplocation.com')
     
-    
     timePause()
-    #从百度进入网站
-    # pageFromBaidu(tab)
-    
-    #从google进入网站
-    # pageFromGoogle(browser)
     tab = browser.new_tab()
     tab.get(target_url)
     
-    # count = 1
-    # while count<5:
-    #     try:
-    #         tab.get(target_url)
-    #         tab._wait_loaded(timeout=20)
-    #     except:
-    #         count = count + 1
-    #         if count < 5:
-    #             tab.refresh()
-    #         else:
-    #             break
-    timeLongPause()
-    # timePause()
-
-    # tab = browser.latest_tab
-    
-    
-    # timePause()
+    timePause()
     #同意插件获取数据
-    acceptExtension(browser)
+    dimension11_value = acceptExtension(browser)
     timePause()
     randomMoveMouse(tab)
     
@@ -82,8 +90,9 @@ def progressProcess():
 
     # #删除浏览器配置数据
     shutil.rmtree('webData/'+filename)
-    
-    
 
+    return dimension11_value
+    
+    
 if __name__ == '__main__':
     main()
