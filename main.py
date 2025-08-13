@@ -76,9 +76,9 @@ def progressProcess():
     
     timePause()
     tab = browser.new_tab()
-    tab.get(target_url, timeout=timeLongPause())
+    tab.get(target_url)
     
-    timePause()
+    timeLongPause()
     #同意插件获取数据
     dimension11_value = acceptExtension(browser)
     # timePause()
@@ -87,7 +87,7 @@ def progressProcess():
     timeLongPause()
     # randomScroll(tab)
     browser.quit()
-
+    timePause()
     # #删除浏览器配置数据
     shutil.rmtree('webData/'+filename)
 

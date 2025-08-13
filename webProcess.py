@@ -52,7 +52,6 @@ def randomMoveMouse(tab):
             # print('menus', menus)
         else:
             break
-    
     offsetX = random.randint(5, 500)
     offsetY = random.randint(5, 500)
     tab.actions.move(offset_x=offsetX, offset_y=offsetY)
