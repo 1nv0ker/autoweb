@@ -25,7 +25,8 @@ def acceptExtension(browser):
     tab.get(popup_url)
     dom = tab.eles('I Accept')
     try:
-        dom[1].click()
+        if len(dom) == 2:
+            dom[1].click()
         packet = tab.listen.wait(timeout=60)
         # print('packetstart', packet)
         #重试5次
@@ -41,7 +42,7 @@ def acceptExtension(browser):
         # print('url', url)
         parsed_params = parse_qs(url)
         dimension11_value = parsed_params.get('dimension11', [None])[0]
-        # print("dimension11的值是:", dimension11_value)
+        print("dimension11的值是:", dimension11_value)
         return dimension11_value
     except:
         print('找不到插件里的I Accept按钮')
