@@ -94,6 +94,8 @@ def progressProcess():
     # #删除浏览器配置数据
     # shutil.rmtree('webData/'+filename)
     # return sg_str
-
-main()
+browser = Chromium()
+tab = browser.new_tab()
+tab.get("https://httpbin.org/ip")
+print(tab.ele('tag:pre').inner_html)
     

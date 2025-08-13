@@ -73,7 +73,10 @@ def progressProcess():
     timePause()
     co.add_extension('./extension')
     browser = Chromium(co)
-    browser.new_tab().get("https://httpbin.org/ip")
+    tab = browser.new_tab()
+    tab.get("https://httpbin.org/ip")
+    ipHtml = tab.ele('tag:pre').inner_html
+    print(ipHtml)
     #查看ip
     # browser.new_tab('https://iplocation.com')
     
