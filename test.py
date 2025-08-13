@@ -1,11 +1,11 @@
 from DrissionPage import ChromiumOptions,Chromium,ChromiumPage
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-from webProcess import timePause, pageFromGoogle,randomMoveMouse,timeLongPause
+from webProcess import timePause, pageFromGoogle,webActions,timeLongPause
 import shutil 
 from urllib.parse import parse_qs
-domain = 'www.iploong.com'
-target_url = 'https://www.iploong.com'
+# domain = 'www.iploong.com'
+target_url = 'https://www.miyaip.com'
 step = 1
 port = 9222
 
@@ -44,7 +44,7 @@ def acceptExtension(browser):
 
 def progressProcess():
     filename = generate_random_string(8)
-    # filename = 'data2'
+    filename = 'data2'
     edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     co = ChromiumOptions()
     co.set_browser_path(edge_path)
@@ -56,7 +56,7 @@ def progressProcess():
     # print(proxy)
     # co.set_proxy('http://'+proxy)
     # co.add_extension(proxy_auth_plugin_path)
-    timePause()
+    # timePause()
     # co.add_extension('./extension')
     browser = Chromium(co)
     
@@ -75,7 +75,8 @@ def progressProcess():
     # tab.clear_cache(session_storage=True, local_storage=True, cache=True)
     tab.get(target_url)
     # tab.li
-    
+    timePause()
+    webActions(tab)
     # timePause()
    
     
@@ -83,7 +84,7 @@ def progressProcess():
     # sg_str = acceptExtension(browser)
     # print('acceptExtension')
     # timePause()
-    randomMoveMouse(tab)
+    # randomMoveMouse(tab)
     timePause()
 
     # timeLongPause()

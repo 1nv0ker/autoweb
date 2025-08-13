@@ -65,5 +65,28 @@ def randomMoveMouse(tab):
         menus = tab.eles('tag:a')
         menus[2].click()
         timePause()
-    
+
+def webActions(tab):
+    timeLongPause()
+    menus = tab.eles('@class=item')
+    if len(menus)>2:
+        menus[0].click()
+        timePause()
+        menus[1].click()
+    timePause()
+    login = tab.eles('@class=btn login')
+    # print('login', login)
+    if len(login)>0:
+        timePause()
+        login[0].click()
+        timeLongPause()
+        tab.back()
+    timePause()    
+    register = tab.eles('@class=btn signup')
+    if len(register)>0:
+        timePause()
+        register[0].click()
+        timeLongPause()
+        tab.back()
+    timeLongPause()
     

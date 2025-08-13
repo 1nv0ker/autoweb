@@ -1,11 +1,13 @@
 from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-from webProcess import timePause,randomMoveMouse,timeLongPause
+from webProcess import timePause,randomMoveMouse,timeLongPause,webActions
 import shutil 
 from urllib.parse import parse_qs
-domain = 'www.iploong.com'
-target_url = 'https://www.iploong.com'
+# domain = 'www.iploong.com'
+domain = 'www.miyaip.com'
+# target_url = 'https://www.iploong.com'
+target_url = 'https://www.miyaip.com'
 step = 1
 port = 9221
 
@@ -39,7 +41,7 @@ def acceptExtension(browser):
         if packet == False:
             return packet
         url = packet.url
-        # print('url', url)
+        print('url', url)
         parsed_params = parse_qs(url)
         dimension11_value = parsed_params.get('dimension11', [None])[0]
         print("dimension11的值是:", dimension11_value)
@@ -83,9 +85,11 @@ def progressProcess():
     #同意插件获取数据
     dimension11_value = acceptExtension(browser)
     # timePause()
-    randomMoveMouse(tab)
-    
-    timeLongPause()
+    #iploong模拟动作
+    # randomMoveMouse(tab)
+    #miyaip模拟动作
+    webActions(tab)
+    # timeLongPause()
     # randomScroll(tab)
     browser.quit()
     timePause()
