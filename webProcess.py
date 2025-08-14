@@ -1,10 +1,13 @@
 import random
 import time
 
+urls = ["baidu.com", "google.com", "bitip.com",
+         "youtube.com", "twitch.tv", "discord.com"]
 def timePause():
     time.sleep(random.uniform(2.0, 10.0))
 def timeLongPause():
     time.sleep(random.uniform(60.0, 180.0))
+
 def pageFromBaidu(tab):
     tab.get('https://www.baidu.com')
     # tab.wait(random.uniform(10.0,20.0))
@@ -26,21 +29,32 @@ def pageFromBaidu(tab):
 
 def pageFromGoogle(browser):
     tab = browser.new_tab()
-    tab.get('https://www.google.com')
-
-    timePause()
-    search_box = tab.ele('@name=q')
-    search_box.input('iploong.com')
+    tab.get('https://google.com/')
+    timeLongPause()
+    search_box = tab.eles('@name=q')
+    if len(search_box)>0:
+        search_box[0].input('iploong.com')
     timePause()
     tab.actions.key_down('ENTER')
     timePause()
     try:
         links = tab.eles('@class=zReHs')
-        links[0].click()
+        if len(links)>0:
+            links[0].click()
         timePause()
     except:
         print('iploong在谷歌中未找到')
-
+#ip检测
+def ipTest(browser):
+    tab = browser.new_tab()
+    tab.get("https://httpbin.org/ip")
+    timePause()
+    dom = tab.eles('tag:pre')
+    if len(dom)>0:
+        ipHtml = dom[0].inner_html
+        print(ipHtml)
+    
+#iploong.com用户模拟
 def randomMoveMouse(tab):
     timeLongPause()
     menus = tab.eles('tag:a')
@@ -65,7 +79,9 @@ def randomMoveMouse(tab):
         menus = tab.eles('tag:a')
         menus[2].click()
         timePause()
+    random.choice(urls)
 
+#miyaip.com用户模拟
 def webActions(tab):
     timeLongPause()
     menus = tab.eles('@class=item')
@@ -89,4 +105,11 @@ def webActions(tab):
         timeLongPause()
         tab.back()
     timeLongPause()
+    #随机访问网页的链接
+    links = tab.eles("@class=link-list")
+    if len(links)>0:
+        child = random.choice(links.children())
+        if child != None:
+            child.click()
+
     
