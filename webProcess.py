@@ -46,13 +46,18 @@ def pageFromGoogle(browser):
         print('iploong在谷歌中未找到')
 #ip检测
 def ipTest(browser):
-    tab = browser.new_tab()
-    tab.get("https://httpbin.org/ip")
-    timePause()
-    dom = tab.eles('tag:pre')
-    if len(dom)>0:
-        ipHtml = dom[0].inner_html
-        print(ipHtml)
+    try:
+        tab = browser.new_tab()
+        tab.get("https://httpbin.org/ip")
+        dom = tab.eles('tag:pre')
+        if len(dom)>0:
+            ipHtml = dom[0].inner_html
+            print(ipHtml)
+            timePause()
+    except:
+        print('iptest 超时')
+    
+    
     
 #iploong.com用户模拟
 def randomMoveMouse(tab):

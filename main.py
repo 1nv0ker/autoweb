@@ -1,14 +1,14 @@
 from DrissionPage import ChromiumOptions,Chromium
 from plugins import generate_random_string
 from webProxy import create_proxy_auth_extension
-from webProcess import timePause,randomMoveMouse,timeLongPause,webActions
+from webProcess import timePause,randomMoveMouse,timeLongPause,webActions,ipTest
 import shutil 
 from urllib.parse import parse_qs
 # domain = 'www.iploong.com'
 domain = 'www.miyaip.com'
 # target_url = 'https://www.iploong.com'
 target_url = 'https://www.miyaip.com'
-step = 1
+step = 2
 port = 9221
 
 def main():
@@ -23,8 +23,12 @@ def acceptExtension(browser):
     #打开新标签页
     tab = browser.new_tab()
     popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
-    tab.listen.start('matomo.similarweb.io')
-    tab.get(popup_url)
+    try:
+        tab.listen.start('matomo.similarweb.io')
+        tab.get(popup_url)
+    except:
+        print('插件页面超时')
+        return False
     dom = tab.eles('I Accept')
     try:
         if len(dom) == 2:
@@ -74,9 +78,10 @@ def progressProcess():
     co.add_extension('./extension')
     browser = Chromium(co)
     tab = browser.new_tab()
-    tab.get("https://httpbin.org/ip")
-    ipHtml = tab.ele('tag:pre').inner_html
-    print(ipHtml)
+    ipTest(browser)
+    # tab.get("https://httpbin.org/ip")
+    # ipHtml = tab.ele('tag:pre').inner_html
+    # print(ipHtml)
     #查看ip
     # browser.new_tab('https://iplocation.com')
     
