@@ -2,7 +2,7 @@ import random
 import os
 import string
 def getProxy():
-    proxystring = '''proxy.bitip.com:10001:1b7g3stpcswvnbitip_g-DE_f-129029g9h9g1:127939ghg92g2f28'''
+    proxystring = """"""
     proxytemp = proxystring.split('\n')
     proxy = random.choice(proxytemp)
     proxies = proxy.split(':')

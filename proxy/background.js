@@ -5,7 +5,7 @@
                 singleProxy: {
                     scheme: "http",
                     host: "proxy.bitip.com",
-                    port: parseInt(10002)
+                    port: parseInt(10001)
                 },
                 bypassList: ["localhost", "127.0.0.1"]
             }
@@ -16,7 +16,7 @@
         function callbackFn(details) {
             return {
                 authCredentials: {
-                    username: "1b7g3stpcswvnbitip_g-US_f-129029g9h9g1",
+                    username: "1b7g3stpcswvnbitip_g-DE_f-129029g9h9g1",
                     password: "127939ghg92g2f28"
                 }
             };
