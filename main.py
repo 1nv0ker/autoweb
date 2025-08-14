@@ -25,7 +25,7 @@ def acceptExtension(browser):
     popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
     try:
         tab.listen.start('matomo.similarweb.io')
-        tab.get(popup_url)
+        tab.get(popup_url, timeout=timeLongPause())
     except:
         print('插件页面超时')
         return False
@@ -87,7 +87,10 @@ def progressProcess():
     
     timePause()
     tab = browser.new_tab()
-    tab.get(target_url)
+    try:
+        tab.get(target_url, timeout=timeLongPause())
+    except:
+        print('target_url加载 失败')
     
     timeLongPause()
     #同意插件获取数据
