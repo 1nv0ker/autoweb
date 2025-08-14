@@ -108,8 +108,9 @@ def webActions(tab):
     #随机访问网页的链接
     links = tab.eles("@class=link-list")
     if len(links)>0:
-        child = random.choice(links.children())
+        child = random.choice(links[0].children())
         if child != None:
             child.click()
+            timeLongPause()
 
     
