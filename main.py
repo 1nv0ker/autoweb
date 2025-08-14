@@ -4,11 +4,12 @@ from webProxy import create_proxy_auth_extension
 from webProcess import timePause,randomMoveMouse,timeLongPause,webActions,ipTest
 import shutil 
 from urllib.parse import parse_qs
+import random
 # domain = 'www.iploong.com'
 domain = 'www.miyaip.com'
 # target_url = 'https://www.iploong.com'
 target_url = 'https://www.miyaip.com'
-step = 2
+step = 200
 port = 9221
 
 def main():
@@ -67,6 +68,7 @@ def progressProcess():
     edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     co = ChromiumOptions()
     co.set_browser_path(edge_path)
+    co.incognito(True)
     co.set_local_port(port)
     co.set_user_data_path('webData/'+filename)
     proxy_auth_plugin_path = create_proxy_auth_extension(
@@ -94,7 +96,11 @@ def progressProcess():
     
     timeLongPause()
     #同意插件获取数据
-    dimension11_value = acceptExtension(browser)
+    randomValue = random.choices([0,1])
+    if randomValue == 0:
+        dimension11_value = acceptExtension(browser)
+    else:
+        dimension11_value = False
     # timePause()
     #iploong模拟动作
     # randomMoveMouse(tab)
