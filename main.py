@@ -68,7 +68,7 @@ def progressProcess():
     edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
     co = ChromiumOptions()
     co.set_browser_path(edge_path)
-    co.incognito(True)
+    # co.incognito(True)
     co.set_local_port(port)
     co.set_user_data_path('webData/'+filename)
     proxy_auth_plugin_path = create_proxy_auth_extension(
