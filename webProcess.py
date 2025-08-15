@@ -89,33 +89,53 @@ def randomMoveMouse(tab):
 #miyaip.com用户模拟
 def webActions(tab):
     timeLongPause()
-    menus = tab.eles('@class=item')
-    if len(menus)>2:
-        menus[0].click()
+    # menus = tab.eles('@class=item')
+    # if len(menus)>2:
+    #     menus[0].click()
+    #     timePause()
+    #     menus[1].click()
+    # timePause()
+    #随机产生一个动作
+    randomValue = random.choices([0,2])
+    #随机移动鼠标
+    for _ in range(randomValue+1):
+        offsetX = random.randint(50, 1500)
+        offsetY = random.randint(100, 800)
+        tab.actions.move(offset_x=offsetX, offset_y=offsetY)
         timePause()
-        menus[1].click()
-    timePause()
-    login = tab.eles('@class=btn login')
-    # print('login', login)
-    if len(login)>0:
-        timePause()
-        login[0].click()
-        timeLongPause()
-        tab.back()
-    timePause()    
-    register = tab.eles('@class=btn signup')
-    if len(register)>0:
-        timePause()
-        register[0].click()
-        timeLongPause()
-        tab.back()
+
+    if randomValue == 0:
+        print('跳转到登陆页')
+        login = tab.eles('@class=btn login')
+        # print('login', login)
+        if len(login)>0:
+            timePause()
+            login[0].click()
+            timeLongPause()
+            tab.back()
+    elif randomValue==1:
+        print('跳转到注册页')
+        register = tab.eles('@class=btn signup')
+        if len(register)>0:
+            timePause()
+            register[0].click()
+            timeLongPause()
+            tab.back()
+    else:
+        print('随机滚轮')
+        scrollDis = random.randint(50, 3000)
+        tab.actions.scroll(delta_y=scrollDis)
     timeLongPause()
     #随机访问网页的链接
     links = tab.eles("@class=link-list")
     if len(links)>0:
-        child = random.choice(links[0].children())
-        if child != None:
-            child.click()
-            timeLongPause()
+        #随机访问次数
+        randomValue = random.choices([1,9])
+        for _ in range(randomValue):
+            child = random.choice(links[0].children())
+            if child != None:
+                child.click()
+                timePause()
+    
 
     

@@ -9,7 +9,7 @@ import random
 domain = 'www.miyaip.com'
 # target_url = 'https://www.iploong.com'
 target_url = 'https://www.miyaip.com'
-step = 200
+step = 1
 port = 9221
 
 def main():
@@ -26,7 +26,7 @@ def acceptExtension(browser):
     popup_url = 'chrome-extension://hoklmmgfnpapgjgcpechhaamimifchmp/panel/panel.html?domain='+domain
     try:
         tab.listen.start('matomo.similarweb.io')
-        tab.get(popup_url, timeout=timeLongPause())
+        tab.get(popup_url)
     except:
         print('插件页面超时')
         return False
@@ -80,6 +80,7 @@ def progressProcess():
     co.add_extension('./extension')
     browser = Chromium(co)
     # tab = browser.new_tab()
+    #ip检测
     ipTest(browser)
     # tab.get("https://httpbin.org/ip")
     # ipHtml = tab.ele('tag:pre').inner_html
@@ -90,23 +91,25 @@ def progressProcess():
     timePause()
     tab = browser.new_tab()
     try:
-        tab.get(target_url, timeout=timeLongPause())
+        tab.get(target_url)
     except:
         print('target_url加载 失败')
     
     timeLongPause()
-    #同意插件获取数据
+    #随机同意插件获取数据
+    dimension11_value = False
     randomValue = random.choices([0,1])
     if randomValue == 0:
         dimension11_value = acceptExtension(browser)
     else:
+        print('没有打开插件')
         dimension11_value = False
     # timePause()
     #iploong模拟动作
     # randomMoveMouse(tab)
     #miyaip模拟动作
     webActions(tab)
-    # timeLongPause()
+    timePause()
     # randomScroll(tab)
     browser.quit()
     timePause()
