@@ -96,9 +96,9 @@ def webActions(tab):
     #     menus[1].click()
     # timePause()
     #随机产生一个动作
-    randomValue = random.choices([0,2])
+    randomValue = random.choice([0,2])+1
     #随机移动鼠标
-    for _ in range(randomValue+1):
+    for _ in range(int(randomValue)):
         offsetX = random.randint(50, 1500)
         offsetY = random.randint(100, 800)
         tab.actions.move(offset_x=offsetX, offset_y=offsetY)
@@ -130,7 +130,7 @@ def webActions(tab):
     links = tab.eles("@class=link-list")
     if len(links)>0:
         #随机访问次数
-        randomValue = random.choices([1,9])
+        randomValue = random.choice([1,9])
         for _ in range(randomValue):
             child = random.choice(links[0].children())
             if child != None:

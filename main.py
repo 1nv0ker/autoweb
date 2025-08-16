@@ -9,7 +9,7 @@ import random
 domain = 'www.miyaip.com'
 # target_url = 'https://www.iploong.com'
 target_url = 'https://www.miyaip.com'
-step = 1
+step = 100
 port = 9221
 
 def main():
@@ -98,7 +98,7 @@ def progressProcess():
     timeLongPause()
     #随机同意插件获取数据
     dimension11_value = False
-    randomValue = random.choices([0,1])
+    randomValue = random.choice([0,1])
     if randomValue == 0:
         dimension11_value = acceptExtension(browser)
     else:
@@ -111,7 +111,11 @@ def progressProcess():
     webActions(tab)
     timePause()
     # randomScroll(tab)
-    browser.quit()
+    try:
+        print('删除成功')
+        browser.quit()
+    except:
+        print('删除失败')
     timePause()
     # #删除浏览器配置数据
     shutil.rmtree('webData/'+filename)
